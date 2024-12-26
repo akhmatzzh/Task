@@ -7,6 +7,7 @@ import java.net.URI;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -34,14 +35,16 @@ public class Main {
 
                 Map<Integer, List<Posts>> groupedPosts = (Map<Integer, List<Posts>>) posts.stream()
                         .collect(Collectors.groupingBy(Posts::getUserId));
-                for(Map.Entry<Integer, List<Posts>> entry : groupedPosts.entrySet()) {
-                    {
-                        System.out.println("Индификатор пользователя: " + entry.getKey());
-                        List<Posts> postsList = entry.getValue();
-                        for(Posts post : postsList) {
-                            System.out.println(post.getTitle());
-                        }
+
+                Iterator<Integer> iterator = groupedPosts.keySet().iterator();
+                while ((iterator.hasNext())){
+                    Integer userId = iterator.next();
+                    System.out.println("Индификатор пользователя: " + userId);
+                    List<Posts> list = groupedPosts.get(userId);
+                    for (Posts post: list){
+                        System.out.println(post.getTitle());
                     }
+                    
                     System.out.println();
                 }
             }
